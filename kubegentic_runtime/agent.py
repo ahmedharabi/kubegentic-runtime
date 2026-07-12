@@ -1,16 +1,14 @@
 from .config import Config
 from openai import OpenAI
 import os
+from .providers.factory import get_provider
 
-
+# abstract class or interface that has baseurl and api key attributes and a complemete methode.
 
 class Agent:
     def __init__(self,config:Config):
         self.config = config
-        self.client =OpenAI(
-                    api_key=os.environ.get("GROQ_API_KEY"),
-                    base_url="https://api.groq.com/openai/v1",
-                    )
+        self.client =get_provider(config)
         self.message_history:dict[str, list[dict]] = {}
 
     def build_messages(self,session_id:str,prompt:str)->str:
@@ -29,14 +27,10 @@ class Agent:
         )
 
 
-    def invoke(self,prompt:str,session_id:str)->str:
+    async def invoke(self,prompt:str,session_id:str)->str:
         messages=self.build_messages(session_id,prompt)
 
-        response =  self.client.responses.create(
-            input=messages,
-            model="openai/gpt-oss-20b",
-        )
-        assistant_msg=response.output_text
+        assistant_msg=await self.client.complete(messages)
 
         self.save_messages(session_id,assistant_msg)
         return assistant_msg

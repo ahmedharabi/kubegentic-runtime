@@ -15,12 +15,14 @@ class Config:
         model: str,
         provider: str,
         system_prompt: str,
+        llm_api_key: str,
         max_history_messages: int = 20,
     ):
         self.agent_name = agent_name
         self.model = model
         self.provider = provider
         self.system_prompt = system_prompt
+        self.llm_api_key = llm_api_key
         self.max_history_messages = max_history_messages
 
 def load_config()->Config:
@@ -29,5 +31,5 @@ def load_config()->Config:
         model=_require("AGENT_MODEL"),
         provider=_require("AGENT_PROVIDER"),
         system_prompt=_require("AGENT_SYSTEM_PROMPT"),
-
+        llm_api_key=_require("LLM_API_KEY")
     )

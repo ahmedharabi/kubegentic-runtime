@@ -22,7 +22,7 @@ class InvokeResponse(BaseModel):
 
 @app.post("/invoke")
 async def invoke(request: InvokeRequest):
-    answer=agent.invoke(request.prompt,request.session_id )
+    answer=await agent.invoke(request.prompt,request.session_id )
     return InvokeResponse(response=answer,agent=config.agent_name)
 
 @app.get("/health")
