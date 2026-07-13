@@ -15,9 +15,9 @@ class DeepSeekProvider(LLMProvider):
         self.model = model
         self.client = AsyncOpenAI(api_key=llm_api_key, base_url=self.BASE_URL)
 
-    async def complete(self, messages: list[dict]) -> str:
-        response = await self.client.chat.completions.create(
-            model=self.model,
-            messages=messages,
-        )
-        return response.choices[0].message.content or ""
+    async def complete(self, messages:list[dict],tools: list[dict] ):
+        kwargs = {"model": self.model, "messages": messages}
+        if tools:
+            kwargs["tools"] = tools
+        response = await self.client.chat.completions.create(**kwargs)
+        return response.choices[0].message
