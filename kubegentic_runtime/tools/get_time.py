@@ -11,5 +11,5 @@ class GetTimeTool(Tool):
     )
     parameters = {"type": "object", "properties": {}, "required": []}
 
-    def execute(self, args: dict) -> str:
+    async def execute(self, args: dict) -> str:
         return datetime.now(timezone.utc).isoformat()

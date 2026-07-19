@@ -6,7 +6,7 @@ class Tool(ABC):
     parameters:dict
 
     @abstractmethod
-    def execute(self,args:dict) -> str:
+    async def execute(self,args:dict) -> str:
         """Run the tool. args is the JSON the model produced. Return a string result."""
 
     def describe(self) -> str:
