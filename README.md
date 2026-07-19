@@ -1,6 +1,6 @@
 # kubegentic-runtime
 
-AI agent runtime for the [kubegentic operator](https://github.com/anomalyco/kubegentic-operator). Each runtime pod serves a single agent over HTTP, processing prompts via an LLM backend with tool-calling and session-based message history.
+AI agent runtime for the [kubegentic operator](https://github.com/ahmedharabi/kubegentic). Each runtime pod serves a single agent over HTTP, processing prompts via an LLM backend with tool-calling and session-based message history.
 
 ## Overview
 
