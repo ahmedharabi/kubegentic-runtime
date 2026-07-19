@@ -2,7 +2,9 @@ from .config import Config
 from openai import OpenAI
 import os
 from .providers.factory import get_provider
-from .tools.registry import default_registry
+from .tools import build_registry
+
+from .tools.registry import  build_registry
 # abstract class or interface that has baseurl and api key attributes and a complemete methode.
 
 class Agent:
@@ -10,7 +12,7 @@ class Agent:
     def __init__(self,config:Config):
         self.config = config
         self.client =get_provider(config)
-        self.registry = default_registry()
+        self.registry = build_registry(config)
         self.message_history:dict[str, list[dict]] = {}
 
     def build_messages(self,session_id:str,prompt:str)->str:
@@ -45,7 +47,7 @@ class Agent:
                 self.save_messages(session_id, final)
                 return final
             for tool_call in message.tool_calls:
-                result = self.registry.execute(
+                result = await self.registry.execute(
                     tool_call.function.name,
                     tool_call.function.arguments,  # JSON string; registry parses it
                 )
